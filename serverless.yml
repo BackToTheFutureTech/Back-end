@@ -7,6 +7,11 @@ provider:
   profile: Serverless
   lambdaHashingVersion: 20201221
   region: eu-west-2
+  environment: 
+    DB_HOST: ${file(./config.dev.json):DB_HOST}
+    DB_USER: ${file(./config.dev.json):DB_USER}
+    DB_NAME: ${file(./config.dev.json):DB_NAME}
+    DB_PASSWORD: ${file(./config.dev.json):DB_PASSWORD}
 
 package:
   individually: true

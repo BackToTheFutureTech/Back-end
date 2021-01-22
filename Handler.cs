@@ -1,9 +1,10 @@
 using Amazon.Lambda.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using Amazon.Lambda.APIGatewayEvents;
 using System.Text.Json;
+using MySql.Data.MySqlClient;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
@@ -13,21 +14,31 @@ namespace AwsDotnetCsharp
     {
         public APIGatewayProxyResponse GetOpportunity(APIGatewayProxyRequest request)
         {
-            string id = request.PathParameters["id"];
-            LambdaLogger.Log("get opportunity " + id);
+            string oppId = request.PathParameters["id"];
+            LambdaLogger.Log("get opportunity - db request " + oppId);
+
+            string dbHost =  Environment.GetEnvironmentVariable("DB_HOST");
+            string dbUser = Environment.GetEnvironmentVariable("DB_USER");
+            string dbPassword =  Environment.GetEnvironmentVariable("DB_PASSWORD");
+            string dbName = Environment.GetEnvironmentVariable("DB_NAME");
+
+            MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
+            connection.Open();
+
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM `Opportunity` WHERE `opportunityId` = @oppId;";
+            cmd.Parameters.AddWithValue("@oppId", oppId);
 
             ArrayList opportunities = new ArrayList();
-            Opportunity o1 = new Opportunity("1", "Derian House", "Feed the Homeless", "Serve Food", 5, new DateTime(2021, 4, 15), "B8 9TH", "60 Grange Rd", "", "Bolton", "");
-            Opportunity o2 = new Opportunity("2", "St Mary's", "Seasonal Clearout", "Gardening", 10, new DateTime(2021, 3, 30), "B8 9TH", "60 Grange Rd", "", "Crewe", "bla bla");
 
-            if (id == "1")
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                opportunities.Add(o1);
+                Opportunity opportunity = new Opportunity(reader.GetString("opportunityId"), reader.GetString("charityId"),reader.GetString("opportunityName"), reader.GetString("opportunityDescription"));
+                opportunities.Add(opportunity);
             }
-            else
-            {
-                opportunities.Add(o2);
-            }
+            
+            connection.Close();
 
             return new APIGatewayProxyResponse
             {
@@ -65,30 +76,16 @@ public APIGatewayProxyResponse SaveOpportunity(APIGatewayProxyRequest request) {
     public class Opportunity
     {
         public string Id { get; set; }
-        public string Charity { get; set; }
+        public string CharityId { get; set; }
         public string Name { get; set; }
-        public string TaskType { get; set; }
-        public int NumVolunteers { get; set; }
-        public DateTime Date { get; set; }
-        public string Postcode { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string Location { get; set; }
         public string Description { get; set; }
 
-        public Opportunity(string opportunityId, string charity, string name, string taskType, int numVolunteers, DateTime date, string postcode, string address1, string address2, string location, string description)
+        public Opportunity(string opportunityId, string charityId, string opportunityName, string opportunityDescription)
         {
             Id = opportunityId;
-            Charity = charity;
-            Name = name;
-            TaskType = taskType;
-            NumVolunteers = numVolunteers;
-            Date = date;
-            Postcode = postcode;
-            Address1 = address1;
-            Address2 = address2;
-            Location = location;
-            Description = description;
+            CharityId = charityId;
+            Name = opportunityName;
+            Description = opportunityDescription;
         }
 
         public Opportunity() {}
