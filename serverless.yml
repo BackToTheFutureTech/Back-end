@@ -17,18 +17,16 @@ package:
   individually: true
 
 functions:
-  get-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::GetOpportunity
-
+  get-allOpportunities:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::GetAllOpportunities
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
       - httpApi:
-          path: /opportunities/{id}
+          path: /opportunities
           method: get
   save-opportunity:
     handler: CsharpHandlers::AwsDotnetCsharp.Handler::SaveOpportunity
-
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
