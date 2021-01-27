@@ -26,11 +26,11 @@ functions:
           path: /opportunities
           method: get
   save-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::SaveOpportunity
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::PostOpportunity
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
       - httpApi:
-          path: /opportunities/{id}
+          path: /opportunities/{charityId}
           method: post
   

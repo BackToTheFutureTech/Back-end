@@ -62,22 +62,43 @@ namespace AwsDotnetCsharp
             };
         }
         
-        public APIGatewayProxyResponse SaveOpportunity(APIGatewayProxyRequest request)
+        public APIGatewayProxyResponse PostOpportunity(APIGatewayProxyRequest request)
         {
-
+            string charityId = request.PathParameters["charityId"];
             string requestBody = request.Body;
             Opportunity o = JsonSerializer.Deserialize<Opportunity>(requestBody);
-            LambdaLogger.Log("Saving Opportunity: " + o.name);
+            //LambdaLogger.Log("Saving Opportunity: " + o.name);
 
+             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
+            connection.Open();
+            try {
+            string sql = @"INSERT INTO `Opportunity`
+                    ( opportunityName, opportunityDescription, 
+                      charityId, taskType,
+                      numVolunteers, opportunityDate, 
+                      postcode, address1, address2, city) VALUES
+                    ('A new opportunity', 'bla bla bla bla', 
+                    'e95d69d9-5c9d-11eb-83f0-06358a409ac0', 'Serve Food', 
+                     20, '2021-03-10', 
+                     'BL2 24D','60 Grange Rd',' ','Bolton');";
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+            cmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                LambdaLogger.Log(err.ToString());
+            }
+            connection.Close();
+            int statusCode = 200;
             return new APIGatewayProxyResponse
             {
-                Body = "Opportunity Saved",
+                Body = "Opportunity Saved for " +charityId,
                 Headers = new Dictionary<string, string>
             {
                 { "Content-Type", "application/json" },
                 { "Access-Control-Allow-Origin", "*" }
             },
-                StatusCode = 200,
+                StatusCode = statusCode,
             };
         }
 
