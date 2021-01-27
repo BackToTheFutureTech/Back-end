@@ -12,6 +12,8 @@ provider:
     DB_USER: ${file(./config.dev.json):DB_USER}
     DB_NAME: ${file(./config.dev.json):DB_NAME}
     DB_PASSWORD: ${file(./config.dev.json):DB_PASSWORD}
+  httpApi:
+    cors: true
 
 package:
   individually: true
@@ -33,4 +35,4 @@ functions:
       - httpApi:
           path: /opportunities/{charityId}
           method: post
-  
+          
