@@ -21,85 +21,119 @@ namespace AwsDotnetCsharp
 
         public APIGatewayProxyResponse GetAllOpportunities(APIGatewayProxyRequest request)
         {
-            //LambdaLogger.Log("get all active opportunities");
+            int returnCode = 1;
+            string mesg = "";
 
             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
             connection.Open();
-
-            var cmd = connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM `V_allOpportunities`";
             ArrayList opportunities = new ArrayList();
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                Opportunity opportunity = new Opportunity(
-                    reader.GetInt32("id"), 
-                    reader.GetString("charity"),
-                    reader.GetString("name"), 
-                    reader.GetString("taskType"), 
-                    reader.GetInt32("numVolunteers"), 
-                    reader.GetString("date"), 
-                    reader.GetString("postcode"), 
-                    reader.GetString("address1"), 
-                    reader.GetString("address2"), 
-                    reader.GetString("city"), 
-                    reader.GetString("description"));
-                opportunities.Add(opportunity);
-            }
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT * FROM `V_allOpportunities`";
 
-            connection.Close();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Opportunity opportunity = new Opportunity(
+                        reader.GetInt32("id"),
+                        reader.GetString("charity"),
+                        reader.GetString("name"),
+                        reader.GetString("taskType"),
+                        reader.GetInt32("numVolunteers"),
+                        reader.GetString("date"),
+                        reader.GetString("postcode"),
+                        reader.GetString("address1"),
+                        reader.GetString("address2"),
+                        reader.GetString("city"),
+                        reader.GetString("description"));
+                    opportunities.Add(opportunity);
+                }
+                mesg = JsonSerializer.Serialize(opportunities);
+                returnCode = 200;
+            }
+            catch (Exception err)
+            {
+                mesg = "Oops. Something went wrong. Failed to read data.";
+                LambdaLogger.Log(err.ToString());
+                returnCode = 500;
+            }
+            finally
+            {
+                connection.Close();
+            }
 
             return new APIGatewayProxyResponse
             {
-                Body = JsonSerializer.Serialize(opportunities),
+                Body = mesg,
                 Headers = new Dictionary<string, string>
             {
                 { "Content-Type", "application/json" },
                 { "Access-Control-Allow-Origin", "*" }
             },
-                StatusCode = 200,
+                StatusCode = returnCode,
             };
+
+
         }
-        
+
         public APIGatewayProxyResponse PostOpportunity(APIGatewayProxyRequest request)
         {
+            int returnCode = 1;
+            string mesg = "";
             string charityId = request.PathParameters["charityId"];
-            string requestBody = request.Body;
-            Opportunity o = JsonSerializer.Deserialize<Opportunity>(requestBody);
-            //LambdaLogger.Log("Saving Opportunity: " + o.name);
 
-             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
+            MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
             connection.Open();
-            try {
-            string sql = @"INSERT INTO `Opportunity`
+            try
+            {
+                Opportunity o = JsonSerializer.Deserialize<Opportunity>(request.Body);
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"INSERT INTO `Opportunity`
                     ( opportunityName, opportunityDescription, 
                       charityId, taskType,
                       numVolunteers, opportunityDate, 
                       postcode, address1, address2, city) VALUES
-                    ('A new opportunity', 'bla bla bla bla', 
-                    'e95d69d9-5c9d-11eb-83f0-06358a409ac0', 'Serve Food', 
-                     20, '2021-03-10', 
-                     'BL2 24D','60 Grange Rd',' ','Bolton');";
-            MySqlCommand cmd = new MySqlCommand(sql, connection);
-            cmd.ExecuteNonQuery();
+                    (@name, @description, 
+                     @charityId, @taskType, 
+                     @numVolunteers, @date, 
+                     @postcode,@address1,@address2,@city);";
+                cmd.Parameters.AddWithValue("@name", o.name);
+                cmd.Parameters.AddWithValue("@charityId", charityId);
+                cmd.Parameters.AddWithValue("@description", o.description);
+                cmd.Parameters.AddWithValue("@taskType", o.taskType);
+                cmd.Parameters.AddWithValue("@numVolunteers", o.numVolunteers);
+                cmd.Parameters.AddWithValue("@date", o.date);
+                cmd.Parameters.AddWithValue("@postcode", o.postcode);
+                cmd.Parameters.AddWithValue("@address1", o.address1);
+                cmd.Parameters.AddWithValue("@address2", o.address2);
+                cmd.Parameters.AddWithValue("@city", o.location);
+                cmd.ExecuteNonQuery();
+                mesg = "Opportunity Saved for " + charityId;
+                returnCode = 200;
             }
             catch (Exception err)
             {
+                mesg = "Oops. Something went wrong. Failed to save.";
                 LambdaLogger.Log(err.ToString());
+                returnCode = 500;
             }
-            connection.Close();
-            int statusCode = 200;
+            finally
+            {
+                connection.Close();
+            };
+
             return new APIGatewayProxyResponse
             {
-                Body = "Opportunity Saved for " +charityId,
+                Body = mesg,
                 Headers = new Dictionary<string, string>
-            {
+                {
                 { "Content-Type", "application/json" },
                 { "Access-Control-Allow-Origin", "*" }
-            },
-                StatusCode = statusCode,
+                },
+                StatusCode = returnCode,
             };
+
         }
 
 
@@ -120,7 +154,7 @@ namespace AwsDotnetCsharp
         public string location { get; set; }
         public string description { get; set; }
 
-        public Opportunity (int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description)
+        public Opportunity(int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description)
         {
             id = Id;
             charity = Charity;
