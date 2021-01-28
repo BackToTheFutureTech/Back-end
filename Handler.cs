@@ -136,6 +136,56 @@ namespace AwsDotnetCsharp
 
         }
 
+        public APIGatewayProxyResponse GetAllCharities(APIGatewayProxyRequest request)
+        {
+            int returnCode = 1;
+            string mesg = "";
+
+            MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
+            connection.Open();
+            ArrayList charities = new ArrayList();
+            try
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT * FROM Charity";
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Charity charity = new Charity(
+                        reader.GetInt32("charityId"),
+                        reader.GetString("charityName"),
+                        reader.GetString("imageUrl"),
+                        reader.GetString("charityDescription"));
+                    charities.Add(charity);
+                }
+                mesg = JsonSerializer.Serialize(charities);
+                returnCode = 200;
+            }
+            catch (Exception err)
+            {
+                mesg = "Oops. Something went wrong. Failed to read data.";
+                LambdaLogger.Log(err.ToString());
+                returnCode = 500;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return new APIGatewayProxyResponse
+            {
+                Body = mesg,
+                Headers = new Dictionary<string, string>
+            {
+                { "Content-Type", "application/json" },
+                { "Access-Control-Allow-Origin", "*" }
+            },
+                StatusCode = returnCode,
+            };
+
+
+        }
 
     }
 
@@ -170,6 +220,22 @@ namespace AwsDotnetCsharp
         }
 
         public Opportunity() { }
+    }
+    public class Charity
+    {
+        public int charityId { get; set; }
+        public string charityName { get; set; }
+        public string imageUrl { get; set; }
+        public string charityDescription { get; set; }
+
+        public Charity(int Id, string Name, string ImgURL, string Description)
+        {
+            charityId = Id;
+            charityName = Name;
+            imageUrl = ImgURL;
+            charityDescription = Description;
+        }
+        public Charity() { }
     }
 
     public class Request
