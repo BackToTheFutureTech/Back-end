@@ -12,6 +12,8 @@ provider:
     DB_USER: ${file(./config.dev.json):DB_USER}
     DB_NAME: ${file(./config.dev.json):DB_NAME}
     DB_PASSWORD: ${file(./config.dev.json):DB_PASSWORD}
+  httpApi:
+    cors: true
 
 package:
   individually: true
@@ -26,11 +28,11 @@ functions:
           path: /opportunities
           method: get
   save-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::SaveOpportunity
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::PostOpportunity
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
       - httpApi:
-          path: /opportunities/{id}
+          path: /opportunities/{charityId}
           method: post
-  
+          
