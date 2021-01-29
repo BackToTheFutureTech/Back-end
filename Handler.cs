@@ -153,7 +153,7 @@ namespace AwsDotnetCsharp
                 while (reader.Read())
                 {
                     Charity charity = new Charity(
-                        reader.GetInt32("charityId"),
+                        reader.GetString("charityId"),
                         reader.GetString("charityName"),
                         reader.GetString("imageUrl"),
                         reader.GetString("charityDescription"));
@@ -223,12 +223,12 @@ namespace AwsDotnetCsharp
     }
     public class Charity
     {
-        public int charityId { get; set; }
+        public string charityId { get; set; }
         public string charityName { get; set; }
         public string imageUrl { get; set; }
         public string charityDescription { get; set; }
 
-        public Charity(int Id, string Name, string ImgURL, string Description)
+        public Charity(string Id, string Name, string ImgURL, string Description)
         {
             charityId = Id;
             charityName = Name;
