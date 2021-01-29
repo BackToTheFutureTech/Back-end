@@ -33,8 +33,6 @@ Responds with JSON containing all active volunteer opportunities in the Database
 
 ---
 
----
-
 ##### GET /charities
 
 [https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities)
@@ -62,6 +60,7 @@ Will create a new volunteer opportunity when sent a JSON payload with an authori
         "location": "Bolton",
         "description": "Make a child smile by helping us tidy up the outdoor garden and play area of ... hospice..."
     }
+```
     
 ---
 ---
@@ -112,4 +111,4 @@ Will create a new volunteer opportunity when sent a JSON payload with an authori
 
         serverless deploy
 
-```
+---
