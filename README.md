@@ -10,11 +10,59 @@ This project uses the following technology:
 
 - Serverless Framework
 - JavaScript (ES2015+)
+- C#
 - SQL
 - Mysql library
 - AWS Lambda and API Gateway
 - AWS RDS
 - ESLint
+
+### To build and deploy the API
+
+## Dependencies
+1. A MySql database on [AWS](https://aws.amazon.com/) must be available.
+2. [Serverless](https://www.serverless.com/framework/docs/getting-started/) must be installed and available with credentials set. 
+
+    eg To install with node     
+    
+    npm install -g serverless 
+
+    To set credentials
+
+    serverless config credentials --provider aws --key <key> --secret <secret>
+
+## To build and deploy
+
+1. Clone the repository  
+2. To create the database tables and views run 
+
+    mysql -u <user> -p -h <database instance endpoint> < ./sql/createTables.sql
+
+   To insert some test data run
+
+    mysql -u <user> -p -h <database instance endpoint> < ./sql/insertData.sql
+ 
+3. To set the environment
+
+    Create a config.dev.json file of the form config.example.json e.g.
+
+    {
+    "DB_HOST": "some-rds-endpoint",
+    "DB_NAME": "some-database-name",
+    "DB_USER": "some-database-user",
+    "DB_PASSWORD": "some-user-password"
+    }
+
+4. To build the application run
+
+    ./build.sh 
+
+5. To deploy the lambda functions
+
+    serverless deploy
+
+---
+---    
 
 ### Endpoints
 
