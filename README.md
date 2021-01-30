@@ -43,9 +43,9 @@ Responds with JSON containing all charities in the Database.
 
 ##### POST /opportunity
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/:charityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/:charityId)
+[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
-Will create a new volunteer opportunity when sent a JSON payload with an authorised charityId in the format:
+Will create a new volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
 
 ```json
 
@@ -63,6 +63,39 @@ Will create a new volunteer opportunity when sent a JSON payload with an authori
 ```
     
 ---
+
+##### EDIT /opportunity
+
+[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId)
+
+Will update a volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
+
+```json
+
+{
+        "name": "An update",
+        "taskType": "Gardening",
+        "numVolunteers": 5,
+        "date": "2021-04-15T00:00:00",
+        "postcode": "B8 9TH",
+        "address1": "60 Grange Rd",
+        "address2": "",
+        "location": "Bolton",
+        "description": "Something new..."
+    }
+```
+    
+---
+
+##### DELETE /opportunity
+
+[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
+
+Will set a specified volunteer opportunity for an authorised charityId as inactive.  
+
+    
+---
+
 ---
 
 ### To build and deploy the API
