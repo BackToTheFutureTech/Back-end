@@ -41,6 +41,24 @@ functions:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
       - httpApi:
-          path: /opportunities/{charityId}
+          path: /charities/{charityId}/opportunities
           method: post
+  edit-opportunity:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::EditOpportunity
+    package:
+      artifact: bin/Release/netcoreapp3.1/MAD_days.zip
+    events:
+      - httpApi:
+          path: /charities/{charityId}/opportunities/{opportunityId}
+          method: put
+  delete-opportunity:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::DeleteOpportunity
+    package:
+      artifact: bin/Release/netcoreapp3.1/MAD_days.zip
+    events:
+      - httpApi:
+          path: /charities/{charityId}/opportunities/{opportunityId}
+          method: delete
+  
+  
           
