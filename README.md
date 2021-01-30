@@ -43,7 +43,7 @@ Responds with JSON containing all charities in the Database.
 
 ##### POST /opportunity
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/{charityId}](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/{charityId})
+[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/:charityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities/:charityId)
 
 Will create a new volunteer opportunity when sent a JSON payload with an authorised charityId in the format:
 
