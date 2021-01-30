@@ -41,7 +41,7 @@ Responds with JSON containing all charities in the Database.
 
 ---
 
-##### POST /opportunity
+##### POST /charities/:charityId/opportunities
 
 [https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
@@ -64,7 +64,7 @@ Will create a new volunteer opportunity for an authorised charityId when sent a 
     
 ---
 
-##### EDIT /opportunity
+##### PUT /charities/:charityId/opportunities/:opportunityId
 
 [https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId)
 
@@ -87,7 +87,7 @@ Will update a volunteer opportunity for an authorised charityId when sent a JSON
     
 ---
 
-##### DELETE /opportunity
+##### DELETE /charities/:charityId/opportunities/:opportunityId
 
 [https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
