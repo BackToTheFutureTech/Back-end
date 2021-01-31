@@ -87,7 +87,15 @@ AS SELECT   o.opportunityId id,
             o.address1, 
             o.address2, 
             o.city, 
-            o.opportunityDescription description
-FROM Opportunity o, Charity c 
-WHERE o.charityId = c.charityId 
-AND o.isActive = TRUE;
+            o.opportunityDescription description,
+			o.thumbnail,
+            COUNT(v.opportunityId) AS numRegVolunteers 
+FROM Opportunity o
+JOIN Charity c 
+ON  c.charityId = o.charityId
+LEFT JOIN Opportunity_Volunteer v
+ON o.opportunityId = v.opportunityId
+WHERE o.isActive = TRUE
+GROUP BY o.opportunityId
+;
+
