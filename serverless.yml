@@ -59,6 +59,14 @@ functions:
       - httpApi:
           path: /charities/{charityId}/opportunities/{opportunityId}
           method: delete
+  signup-volunteer:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::PostVolunteer
+    package:
+      artifact: bin/Release/netcoreapp3.1/MAD_days.zip
+    events:
+      - httpApi:
+          path: /opportunities/{opportunityId}
+          method: post
   
   
           

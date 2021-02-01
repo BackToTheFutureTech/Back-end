@@ -193,7 +193,7 @@ namespace AwsDotnetCsharp
             int returnCode = 1;
             string mesg = "";
             string charityId = request.PathParameters["charityId"];
-            int opportunityId =  Int32.Parse(request.PathParameters["opportunityId"]);
+            int opportunityId = Int32.Parse(request.PathParameters["opportunityId"]);
 
             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
             connection.Open();
@@ -252,12 +252,12 @@ namespace AwsDotnetCsharp
 
         }
 
- public APIGatewayProxyResponse DeleteOpportunity(APIGatewayProxyRequest request)
+        public APIGatewayProxyResponse DeleteOpportunity(APIGatewayProxyRequest request)
         {
             int returnCode = 1;
             string mesg = "";
             string charityId = request.PathParameters["charityId"];
-            int opportunityId =  Int32.Parse(request.PathParameters["opportunityId"]);
+            int opportunityId = Int32.Parse(request.PathParameters["opportunityId"]);
 
             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
             connection.Open();
@@ -298,6 +298,58 @@ namespace AwsDotnetCsharp
 
         }
 
+        public APIGatewayProxyResponse PostVolunteer(APIGatewayProxyRequest request)
+        {
+            int returnCode = 1;
+            string mesg = "";
+            string opportunityId = request.PathParameters["opportunityId"];
+            
+            MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
+            connection.Open();
+            try
+            {
+                Volunteer v = JsonSerializer.Deserialize<Volunteer>(request.Body);
+                String id = Guid.NewGuid().ToString();
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"START TRANSACTION; 
+                INSERT INTO `Volunteer`
+                    ( volunteerId volunteerName, email, mobile) VALUES
+                    (@id, @name, 
+                     @email, @mobile); 
+                INSERT INTO `Opportunity_Volunteer` (opportunityId, volunteerId) VALUES
+                    (@opportunityId, @id); COMMIT;";
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@opportunityId", opportunityId);
+                cmd.Parameters.AddWithValue("@name", v.volunteerName);
+                cmd.Parameters.AddWithValue("@email", v.email);
+                cmd.Parameters.AddWithValue("@mobile", v.mobile);
+                cmd.ExecuteNonQuery();
+                mesg = "Signup Successful";
+                returnCode = 200;
+            }
+            catch (Exception err)
+            {
+                mesg = "Oops. Something went wrong. Failed to sign up.";
+                LambdaLogger.Log(err.ToString());
+                returnCode = 500;
+            }
+            finally
+            {
+                connection.Close();
+            };
+
+            return new APIGatewayProxyResponse
+            {
+                Body = mesg,
+                Headers = new Dictionary<string, string>
+                {
+                { "Content-Type", "application/json" },
+                { "Access-Control-Allow-Origin", "*" }
+                },
+                StatusCode = returnCode,
+            };
+
+        }
 
 
     }
@@ -348,6 +400,23 @@ namespace AwsDotnetCsharp
             charityDescription = Description;
         }
         public Charity() { }
+    }
+
+    public class Volunteer
+    {
+        public string volunteerId { get; set; }
+        public string volunteerName { get; set; }
+        public string email { get; set; }
+        public string mobile { get; set; }
+
+        public Volunteer(string Id, string Name, string Email, string Mobile)
+        {
+            volunteerId = Id;
+            volunteerName = Name;
+            email = email;
+            mobile = mobile;
+        }
+        public Volunteer() { }
     }
 
     public class Request
