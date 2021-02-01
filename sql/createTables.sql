@@ -50,6 +50,7 @@ CREATE TABLE Opportunity (
 CREATE TABLE Opportunity_Volunteer (
 	opportunityId INT NOT NULL,
 	volunteerId VARCHAR(40) NOT NULL,
+	groupNum INT DEFAULT 1,
 	PRIMARY KEY (opportunityId, volunteerId),
 	FOREIGN KEY (opportunityId) REFERENCES Opportunity (opportunityId)
 		ON DELETE CASCADE,
@@ -89,7 +90,7 @@ AS SELECT   o.opportunityId id,
             o.city, 
             o.opportunityDescription description,
 			o.thumbnail,
-            COUNT(v.opportunityId) AS numRegVolunteers 
+            IFNULL(SUM(v.groupNum),0) AS numRegVolunteers 
 FROM Opportunity o
 JOIN Charity c 
 ON  c.charityId = o.charityId
