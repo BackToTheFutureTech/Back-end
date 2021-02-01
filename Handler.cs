@@ -47,7 +47,9 @@ namespace AwsDotnetCsharp
                         reader.GetString("address2"),
                         reader.GetString("city"),
                         reader.GetString("description"),
-                        reader.GetString("thumbnail"));
+                        reader.GetString("thumbnail"),
+                        reader.GetInt32("numRegVolunteers")    
+                    );
                     opportunities.Add(opportunity);
                 }
                 mesg = JsonSerializer.Serialize(opportunities);
@@ -74,7 +76,6 @@ namespace AwsDotnetCsharp
             },
                 StatusCode = returnCode,
             };
-
 
         }
 
@@ -301,8 +302,6 @@ namespace AwsDotnetCsharp
 
         }
 
-
-
     }
 
     public class Opportunity
@@ -319,8 +318,9 @@ namespace AwsDotnetCsharp
         public string location { get; set; }
         public string description { get; set; }
         public string thumbnail { get; set; }
+        public int numRegVolunteers { get; set; }
 
-        public Opportunity(int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description, string Thumbnail)
+        public Opportunity(int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description, string Thumbnail, int NumRegVolunteers)
         {
             id = Id;
             charity = Charity;
@@ -334,6 +334,7 @@ namespace AwsDotnetCsharp
             location = City;
             description = Description;
             thumbnail = Thumbnail;
+            numRegVolunteers = NumRegVolunteers;
         }
 
         public Opportunity() { }
