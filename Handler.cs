@@ -46,7 +46,10 @@ namespace AwsDotnetCsharp
                         reader.GetString("address1"),
                         reader.GetString("address2"),
                         reader.GetString("city"),
-                        reader.GetString("description"));
+                        reader.GetString("description"),
+                        reader.GetString("thumbnail"),
+                        reader.GetInt32("numRegVolunteers")    
+                    );
                     opportunities.Add(opportunity);
                 }
                 mesg = JsonSerializer.Serialize(opportunities);
@@ -74,7 +77,6 @@ namespace AwsDotnetCsharp
                 StatusCode = returnCode,
             };
 
-
         }
 
         public APIGatewayProxyResponse PostOpportunity(APIGatewayProxyRequest request)
@@ -82,7 +84,7 @@ namespace AwsDotnetCsharp
             int returnCode = 1;
             string mesg = "";
             string charityId = request.PathParameters["charityId"];
-
+            LambdaLogger.Log(request.Body);
             MySqlConnection connection = new MySqlConnection($"server={dbHost};user id={dbUser};password={dbPassword};port=3306;database={dbName};");
             connection.Open();
             try
@@ -93,11 +95,11 @@ namespace AwsDotnetCsharp
                     ( opportunityName, opportunityDescription, 
                       charityId, taskType,
                       numVolunteers, opportunityDate, 
-                      postcode, address1, address2, city) VALUES
+                      postcode, address1, address2, city,thumbnail) VALUES
                     (@name, @description, 
                      @charityId, @taskType, 
                      @numVolunteers, @date, 
-                     @postcode,@address1,@address2,@city);";
+                     @postcode,@address1,@address2,@city,@thumbnail);";
                 cmd.Parameters.AddWithValue("@name", o.name);
                 cmd.Parameters.AddWithValue("@charityId", charityId);
                 cmd.Parameters.AddWithValue("@description", o.description);
@@ -108,6 +110,7 @@ namespace AwsDotnetCsharp
                 cmd.Parameters.AddWithValue("@address1", o.address1);
                 cmd.Parameters.AddWithValue("@address2", o.address2);
                 cmd.Parameters.AddWithValue("@city", o.location);
+                cmd.Parameters.AddWithValue("@thumbnail", o.thumbnail);
                 cmd.ExecuteNonQuery();
                 mesg = "Opportunity Saved";
                 returnCode = 200;
@@ -187,7 +190,6 @@ namespace AwsDotnetCsharp
 
         }
 
-
         public APIGatewayProxyResponse EditOpportunity(APIGatewayProxyRequest request)
         {
             int returnCode = 1;
@@ -210,7 +212,8 @@ namespace AwsDotnetCsharp
                         postcode = @postcode, 
                         address1 = @address1, 
                         address2 = @address2, 
-                        city = @city
+                        city = @city,
+                        thumbnail = @thumbnail
                     WHERE `opportunityId` = @opportunityId
                     AND `charityId` = @charityId;";
                 cmd.Parameters.AddWithValue("@name", o.name);
@@ -222,6 +225,7 @@ namespace AwsDotnetCsharp
                 cmd.Parameters.AddWithValue("@address1", o.address1);
                 cmd.Parameters.AddWithValue("@address2", o.address2);
                 cmd.Parameters.AddWithValue("@city", o.location);
+                cmd.Parameters.AddWithValue("@thumbnail", o.thumbnail);
                 cmd.Parameters.AddWithValue("@opportunityId", opportunityId);
                 cmd.Parameters.AddWithValue("@charityId", charityId);
                 cmd.ExecuteNonQuery();
@@ -351,7 +355,6 @@ namespace AwsDotnetCsharp
 
         }
 
-
     }
 
     public class Opportunity
@@ -367,8 +370,10 @@ namespace AwsDotnetCsharp
         public string address2 { get; set; }
         public string location { get; set; }
         public string description { get; set; }
+        public string thumbnail { get; set; }
+        public int numRegVolunteers { get; set; }
 
-        public Opportunity(int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description)
+        public Opportunity(int Id, string Charity, string Name, string TaskType, int NumVolunteers, string Date, string Postcode, string Address1, string Address2, string City, string Description, string Thumbnail, int NumRegVolunteers)
         {
             id = Id;
             charity = Charity;
@@ -381,6 +386,8 @@ namespace AwsDotnetCsharp
             address2 = Address2;
             location = City;
             description = Description;
+            thumbnail = Thumbnail;
+            numRegVolunteers = NumRegVolunteers;
         }
 
         public Opportunity() { }

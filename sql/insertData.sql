@@ -30,14 +30,12 @@ INSERT INTO TaskImage
 ;
 
 INSERT INTO Opportunity 
-    ( opportunityName, opportunityDescription, charityId, taskType,numVolunteers,opportunityDate, postcode, address1, address2, city) VALUES 
-    ("Feeding the homeless", "bla bla bla bla", "e95d69d9-5c9d-11eb-83f0-06358a409ac0", "Serve Food", 20, "2021-03-10", "BL2 24D","60 Grange Rd"," ","Bolton"),
-    ("Seasonal tidy up", "bla bla bla bla", "e95d69d9-5c9d-11eb-83f0-06358a409ac0", "Gardening",
-     10, "2021-03-10", "C24 3TR", "600 Grange Rd"," ", "Crewe"),
-    ("Christmas Cheer", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Wrap Presents",
-     5, "2021-03-19", "BL1 1SD","36 Windermere Rd"," ", "Bolton"),
-     ("For the children", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Wrap Presents", 10, "2021-04-15", "BL1 1SD","36 Windermere Rd"," ", "Bolton"),
-      ("Help the Homeless", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Sort Clothes", 10, "2021-04-22", "BL1 1SD","36 Windermere Rd"," ", "Bolton")
+    ( opportunityName, opportunityDescription, charityId, taskType,numVolunteers,opportunityDate, postcode, address1, address2, city, thumbnail) VALUES 
+    ("Feeding the homeless", "bla bla bla bla", "e95d69d9-5c9d-11eb-83f0-06358a409ac0", "Serve Food", 20, "2021-03-10", "BL2 24D","60 Grange Rd"," ","Bolton", "https://github.com/BackToTheFutureTech/Front-end/blob/main/src/Assets/SortClothing.jpg?raw=true" ),
+    ("Seasonal tidy up", "bla bla bla bla", "e95d69d9-5c9d-11eb-83f0-06358a409ac0", "Gardening", 10, "2021-03-10", "C24 3TR", "600 Grange Rd"," ", "Crewe","https://github.com/BackToTheFutureTech/Front-end/blob/main/src/Assets/SortClothing.jpg?raw=true"),
+    ("Christmas Cheer", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Wrap Presents", 5, "2021-03-19", "BL1 1SD","36 Windermere Rd"," ", "Bolton","https://github.com/BackToTheFutureTech/Front-end/blob/main/src/Assets/TidyGarden.jpg?raw=true"),
+    ("For the children", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Wrap Presents", 10, "2021-04-15", "BL1 1SD","36 Windermere Rd"," ", "Bolton","https://github.com/BackToTheFutureTech/Front-end/blob/main/src/Assets/TidyGarden.jpg?raw=true"),
+    ("Help the Homeless", "bla bla bla bla", "e9ded807-5c9d-11eb-83f0-06358a409ac0", "Sort Clothes", 10, "2021-04-22", "BL1 1SD","36 Windermere Rd"," ", "Bolton","https://github.com/BackToTheFutureTech/Front-end/blob/main/src/Assets/SortClothing.jpg?raw=true")
 ;
 
 INSERT INTO Volunteer 
