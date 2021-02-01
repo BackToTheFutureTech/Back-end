@@ -47,13 +47,14 @@ INSERT INTO Volunteer
 ;
 
 INSERT INTO Opportunity_Volunteer 
-    (opportunityId, VolunteerId) VALUES 
-    (1, "85f1966e-5c9e-11eb-83f0-06358a409ac0" ),
-    (1, "867b5397-5c9e-11eb-83f0-06358a409ac0" ),
-    (1, "b97f030c-63f8-11eb-a638-02e100e24422" ),
-    (4, "867b5397-5c9e-11eb-83f0-06358a409ac0" ),
-    (5, "85f1966e-5c9e-11eb-83f0-06358a409ac0" ),
-    (5, "867b5397-5c9e-11eb-83f0-06358a409ac0" );
+    (opportunityId, VolunteerId, groupNum) VALUES 
+    (1, "85f1966e-5c9e-11eb-83f0-06358a409ac0", 1 ),
+    (1, "867b5397-5c9e-11eb-83f0-06358a409ac0", 1 ),
+    (1, "b97f030c-63f8-11eb-a638-02e100e24422", 1 ),
+    (4, "867b5397-5c9e-11eb-83f0-06358a409ac0", 1 ),
+    (5, "85f1966e-5c9e-11eb-83f0-06358a409ac0", 1 ),
+    (5, "867b5397-5c9e-11eb-83f0-06358a409ac0", 1 ),
+    (3, "b97f030c-63f8-11eb-a638-02e100e24422", 5);
 
 INSERT INTO Comment 
     (charityId, comment) VALUES 

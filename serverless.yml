@@ -65,7 +65,7 @@ functions:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
       - httpApi:
-          path: /opportunities/{opportunityId}
+          path: /opportunities/{opportunityId}/volunteers
           method: post
   
   

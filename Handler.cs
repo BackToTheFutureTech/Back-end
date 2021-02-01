@@ -317,16 +317,17 @@ namespace AwsDotnetCsharp
                 var cmd = connection.CreateCommand();
                 cmd.CommandText = @"START TRANSACTION; 
                 INSERT INTO `Volunteer`
-                    ( volunteerId volunteerName, email, mobile) VALUES
+                    ( volunteerId, volunteerName, email, mobile) VALUES
                     (@id, @name, 
                      @email, @mobile); 
-                INSERT INTO `Opportunity_Volunteer` (opportunityId, volunteerId) VALUES
-                    (@opportunityId, @id); COMMIT;";
+                INSERT INTO `Opportunity_Volunteer` (opportunityId, volunteerId, groupNum) VALUES
+                    (@opportunityId, @id, @groupNum); COMMIT;";
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.Parameters.AddWithValue("@opportunityId", opportunityId);
                 cmd.Parameters.AddWithValue("@name", v.volunteerName);
                 cmd.Parameters.AddWithValue("@email", v.email);
                 cmd.Parameters.AddWithValue("@mobile", v.mobile);
+                cmd.Parameters.AddWithValue("@groupNum",v.groupNum);
                 cmd.ExecuteNonQuery();
                 mesg = "Signup Successful";
                 returnCode = 200;
@@ -415,13 +416,15 @@ namespace AwsDotnetCsharp
         public string volunteerName { get; set; }
         public string email { get; set; }
         public string mobile { get; set; }
+        public int groupNum { get; set; }
 
-        public Volunteer(string Id, string Name, string Email, string Mobile)
+        public Volunteer(string Id, string Name, string Email, string Mobile, int GroupNum)
         {
             volunteerId = Id;
             volunteerName = Name;
-            email = email;
-            mobile = mobile;
+            email = Email;
+            mobile = Mobile;
+            groupNum = GroupNum;
         }
         public Volunteer() { }
     }
