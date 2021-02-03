@@ -27,23 +27,17 @@ The API exposes the following endpoints:
 
 ##### GET /opportunities
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/opportunities)
-
 Responds with JSON containing all active volunteer opportunities in the Database.
 
 ---
 
 ##### GET /charities
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities)
-
 Responds with JSON containing all charities in the Database.
 
 ---
 
 ##### POST /charities/:charityId/opportunities
-
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
 Will create a new volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
 
@@ -58,15 +52,29 @@ Will create a new volunteer opportunity for an authorised charityId when sent a 
         "address1": "60 Grange Rd",
         "address2": "",
         "location": "Bolton",
-        "description": "Make a child smile by helping us tidy up the outdoor garden and play area of ... hospice..."
+        "description": "Make a child smile by helping us tidy up the outdoor garden and play area of ... hospice...",
+        "thumbnail": "A url"
     }
 ```
-    
+
+##### POST /opportunities/:opportunityId/volunteers
+
+Will regsiter a new volunteer or lead volunteer for a specific opportunity when sent a JSON payload in the format:
+   
+```json   
+   
+   {
+        "volunteerName": "Wriggy",
+        "email": "test@test.com",
+        "mobile": "0777777777777",
+        "groupNum": 10
+}
+```
+
 ---
 
 ##### PUT /charities/:charityId/opportunities/:opportunityId
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId)
 
 Will update a volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
 
@@ -81,7 +89,8 @@ Will update a volunteer opportunity for an authorised charityId when sent a JSON
         "address1": "60 Grange Rd",
         "address2": "",
         "location": "Bolton",
-        "description": "Something new..."
+        "description": "Something new...",
+        "thumbnail": "A url"
     }
 ```
     
@@ -89,7 +98,6 @@ Will update a volunteer opportunity for an authorised charityId when sent a JSON
 
 ##### DELETE /charities/:charityId/opportunities/:opportunityId
 
-[https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://r892sqdso9.execute-api.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
 Will set a specified volunteer opportunity for an authorised charityId as inactive.  
 
