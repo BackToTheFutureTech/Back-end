@@ -20,7 +20,7 @@ package:
 
 functions:
   get-allOpportunities:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::GetAllOpportunities
+    handler: CsharpHandlers::AwsDotnetCsharp.GetHandler::GetAllOpportunities
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
@@ -28,7 +28,7 @@ functions:
           path: /opportunities
           method: get
   get-allCharities:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::GetAllCharities
+    handler: CsharpHandlers::AwsDotnetCsharp.GetHandler::GetAllCharities
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
@@ -36,7 +36,7 @@ functions:
           path: /charities
           method: get
   save-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::PostOpportunity
+    handler: CsharpHandlers::AwsDotnetCsharp.CharityAdminHandler::PostOpportunity
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
@@ -44,7 +44,7 @@ functions:
           path: /charities/{charityId}/opportunities
           method: post
   edit-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::EditOpportunity
+    handler: CsharpHandlers::AwsDotnetCsharp.CharityAdminHandler::EditOpportunity
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
@@ -52,7 +52,7 @@ functions:
           path: /charities/{charityId}/opportunities/{opportunityId}
           method: put
   delete-opportunity:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::DeleteOpportunity
+    handler: CsharpHandlers::AwsDotnetCsharp.CharityAdminHandler::DeleteOpportunity
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
@@ -60,7 +60,7 @@ functions:
           path: /charities/{charityId}/opportunities/{opportunityId}
           method: delete
   signup-volunteer:
-    handler: CsharpHandlers::AwsDotnetCsharp.Handler::PostVolunteer
+    handler: CsharpHandlers::AwsDotnetCsharp.VolunteerHandler::PostVolunteer
     package:
       artifact: bin/Release/netcoreapp3.1/MAD_days.zip
     events:
