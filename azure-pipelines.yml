@@ -25,17 +25,14 @@ stages:
         command: 'custom'
         custom: 'tool'
         arguments: 'install --global Amazon.Lambda.Tools --framework netcoreapp3.1'
-    - script: sudo ./build.sh
-      displayName: 'Running Build Script'
-
     - task: DotNetCoreCLI@2
-      displayName: Publish to $(Build.ArtifactStagingDirectory)
+      displayName: Package Function
       inputs:
-        command: 'publish'
-        publishWebProjects: false
-        projects: 'src/**/*.csproj'
-        arguments: '-c Release -o "$(Build.ArtifactStagingDirectory)"'
-        
+        command: 'custom'
+        custom: 'lambda'
+        arguments: 'package --configuration Release --framework netcoreapp3.1 --output-package "$(Build.ArtifactStagingDirectory)"'
+
+
     - task: PublishBuildArtifacts@1
       displayName: Publish Artifacts
       inputs:
