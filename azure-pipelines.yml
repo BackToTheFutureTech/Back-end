@@ -52,7 +52,7 @@ stages:
       - task: LambdaDeployFunction@1
         displayName: 'Deploy Lambda Function'
         inputs:
-          awsCredentials: 'awsLambdaCICDPipeline'
+          awsCredentials: 'AWS Root'
           regionName: 'eu-west-2'
           deploymentMode: 'codeandconfiguration'
           functionName: 'MyFunctionCreateFromAzureDevops'
