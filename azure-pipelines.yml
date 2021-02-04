@@ -67,7 +67,7 @@ stages:
           runtime: 'dotnetcore3.1'
           codeLocation: 'localfile'
           localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip'
-          roleARN: '$(AWS-Lambda-ARN)'
+          
   dependsOn:
   - Build
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
