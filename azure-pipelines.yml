@@ -30,14 +30,14 @@ stages:
       inputs:
         command: 'custom'
         custom: 'lambda'
-        arguments: 'package --configuration Release --framework netcoreapp3.1 --output-package "$(Build.ArtifactStagingDirectory)"'
+        arguments: 'package --configuration Release --framework netcoreapp3.1 --output-package $(Build.ArtifactStagingDirectory)/MAD_days.zip'
 
 
     - task: PublishBuildArtifacts@1
       displayName: Publish Artifacts
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'MAD_Days'
+        ArtifactName: 'MAD_days.zip'
         publishLocation: 'Container'
 
 - stage: Deploy
@@ -52,7 +52,7 @@ stages:
         inputs:
           buildType: 'current'
           downloadType: 'single'
-          artifactName: 'drop'
+          artifactName: 'MAD_days.zip'
           downloadPath: '$(System.ArtifactsDirectory)'
 
       - task: LambdaDeployFunction@1
@@ -63,10 +63,10 @@ stages:
           deploymentMode: 'codeandconfiguration'
           functionName: 'MyFunctionCreateFromAzureDevops'
           description: 'From AzureDevops'
-          functionHandler: 'awsLambdaCICDPipeline::awsLambdaCICDPipeline.Function::FunctionHandler'
+          functionHandler: 'CsharpHandlers::AwsDotnetCsharp.GetHandler::GetAllOpportunities'
           runtime: 'dotnetcore3.1'
           codeLocation: 'localfile'
-          localZipFile: '$(Build.ArtifactStagingDirectory)/drop/awsLambdaCICDPipeline.zip'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip'
           roleARN: '$(AWS-Lambda-ARN)'
   dependsOn:
   - Build
