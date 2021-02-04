@@ -132,10 +132,7 @@ namespace AwsDotnetCsharp
             DBConn dbconn = new DBConn();
             MySqlConnection connection = dbconn.getSqlConnection();
 
-            ArrayList comments = new ArrayList();
-            int commentId;
-            string commentStr = "";
-            List<string> imgUrls = new List<string>();
+            Dictionary<int, VolunteerComment> comments = new Dictionary<int, VolunteerComment>();
 
             try
             {
@@ -146,29 +143,26 @@ namespace AwsDotnetCsharp
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (!reader.IsDBNull(0))
+                    int commentId = reader.GetInt32("id");
+                    string commentStr = reader.GetString("comment");
+                    string imgUrl = "";
+                    if (!reader.IsDBNull(3))
                     {
-                        commentId = reader.GetInt32("id");
-                        commentStr = reader.GetString("comment");
-                        if (!reader.IsDBNull(3))
-                        {
-                            imgUrls.Add(reader.GetString("imageUrl"));
-                        }
-                        while (reader.Read() & (reader.GetInt32("id") == commentId))
-                        {
-                            if (!reader.IsDBNull(3))
-                            {
-                                imgUrls.Add(reader.GetString("imageUrl"));
-                            }
-                        }
+                        imgUrl = reader.GetString("imageUrl");
                     }
 
-                    VolunteerComment comment = new VolunteerComment(
-                        commentStr,
-                        imgUrls);
-                    comments.Add(comment);
+                    if (comments.ContainsKey(commentId))
+                    {
+                        comments[commentId].imageUrls.Add(imgUrl);
+                    }
+                    else
+                    {
+                        List<string> imgUrls = new List<string> { imgUrl };
+                        comments.Add(commentId, new VolunteerComment(commentStr, imgUrls));
+                    }
                 }
-                mesg = JsonSerializer.Serialize(comments);
+
+                mesg = JsonSerializer.Serialize(comments.Values);
                 returnCode = 200;
             }
             catch (Exception err)
