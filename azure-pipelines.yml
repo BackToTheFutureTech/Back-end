@@ -54,7 +54,8 @@ stages:
           downloadType: 'single'
           artifactName: 'MAD_days.zip'
           downloadPath: '$(System.ArtifactsDirectory)'
-
+      - script: chmod 644 $(find . -type f)
+      - script: chmod 755 $(find . -type d)
       - task: LambdaDeployFunction@1
         displayName: 'Deploy Lambda Function'
         inputs:
