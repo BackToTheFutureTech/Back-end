@@ -16,8 +16,7 @@ stages:
     variables: 
     - group: madday-backend-variables
     steps:
-    - script: export PATH="$PATH:/root/.dotnet/tools"
-    - script: ./build.sh
+    - script: sudo ./build.sh
       displayName: 'Running Build Script'
 
     - task: DotNetCoreCLI@2
