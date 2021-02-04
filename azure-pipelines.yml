@@ -45,7 +45,7 @@ stages:
     - job:
 
       variables:
-      - group: madday-backend-variables
+      - group: AWS
 
       steps:
       - task: DownloadBuildArtifacts@0
