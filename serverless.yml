@@ -35,6 +35,14 @@ functions:
       - httpApi:
           path: /charities
           method: get
+  get-volunteerComments:
+    handler: CsharpHandlers::AwsDotnetCsharp.GetHandler::GetVolunteerComments
+    package:
+      artifact: bin/Release/netcoreapp3.1/MAD_days.zip
+    events:
+      - httpApi:
+          path: /charities/{charityId}/comments
+          method: get
   save-opportunity:
     handler: CsharpHandlers::AwsDotnetCsharp.CharityAdminHandler::PostOpportunity
     package:

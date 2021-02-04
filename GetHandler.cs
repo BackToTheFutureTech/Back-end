@@ -121,6 +121,77 @@ namespace AwsDotnetCsharp
             },
                 StatusCode = returnCode,
             };
+        }
+
+        public APIGatewayProxyResponse GetVolunteerComments(APIGatewayProxyRequest request)
+        {
+            int returnCode = 1;
+            string mesg = "";
+            string charityId = request.PathParameters["charityId"];
+
+            DBConn dbconn = new DBConn();
+            MySqlConnection connection = dbconn.getSqlConnection();
+
+            ArrayList comments = new ArrayList();
+            int commentId;
+            string commentStr = "";
+            List<string> imgUrls = new List<string>();
+
+            try
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT * FROM V_Comment WHERE charityId=@charityId";
+                cmd.Parameters.AddWithValue("@charityId", charityId);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (!reader.IsDBNull(0))
+                    {
+                        commentId = reader.GetInt32("id");
+                        commentStr = reader.GetString("comment");
+                        if (!reader.IsDBNull(3))
+                        {
+                            imgUrls.Add(reader.GetString("imageUrl"));
+                        }
+                        while (reader.Read() & (reader.GetInt32("id") == commentId))
+                        {
+                            if (!reader.IsDBNull(3))
+                            {
+                                imgUrls.Add(reader.GetString("imageUrl"));
+                            }
+                        }
+                    }
+
+                    VolunteerComment comment = new VolunteerComment(
+                        commentStr,
+                        imgUrls);
+                    comments.Add(comment);
+                }
+                mesg = JsonSerializer.Serialize(comments);
+                returnCode = 200;
+            }
+            catch (Exception err)
+            {
+                mesg = "Oops. Something went wrong. Failed to read data.";
+                LambdaLogger.Log(err.ToString());
+                returnCode = 500;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return new APIGatewayProxyResponse
+            {
+                Body = mesg,
+                Headers = new Dictionary<string, string>
+            {
+                { "Content-Type", "application/json" },
+                { "Access-Control-Allow-Origin", "*" }
+            },
+                StatusCode = returnCode,
+            };
 
 
         }
