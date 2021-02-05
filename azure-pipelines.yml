@@ -55,18 +55,69 @@ stages:
           artifactName: 'MAD_days.zip'
           downloadPath: '$(System.ArtifactsDirectory)'
       - task: LambdaDeployFunction@1
-        displayName: 'Deploy Lambda Function'
+        displayName: 'Update Signup Volunteer'
         inputs:
           awsCredentials: 'AWS Root'
           regionName: 'eu-west-2'
-          deploymentMode: 'codeandconfiguration'
-          functionName: 'MyFunctionCreateFromAzureDevops'
-          description: 'From AzureDevops'
-          functionHandler: 'CsharpHandlers::AwsDotnetCsharp.GetHandler::GetAllOpportunities'
-          runtime: 'dotnetcore3.1'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-signup-volunteer'
           codeLocation: 'localfile'
           localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
-          roleARN: '$(AWS-Lambda-ARN)'
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Save an Opportunity'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-save-opportunity'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Delete an Opportunity'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-delete-opportunity'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Get All Opportunities'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-get-allOpportunities'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Edit an Opportunity'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-edit-opportunity'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Get All Charities'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-get-allCharities'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
+      
+      - task: LambdaDeployFunction@1
+        displayName: 'Update Get Volunteer Comments'
+        inputs:
+          awsCredentials: 'AWS Root'
+          regionName: 'eu-west-2'
+          deploymentMode: 'codeonly'
+          functionName: 'back-end-dev-get-volunteerComments'
+          codeLocation: 'localfile'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
   dependsOn:
   - Build
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
