@@ -67,7 +67,7 @@ stages:
           functionHandler: 'CsharpHandlers::AwsDotnetCsharp.GetHandler::GetAllOpportunities'
           runtime: 'dotnetcore3.1'
           codeLocation: 'localfile'
-          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip'
+          localZipFile: '$(Build.ArtifactStagingDirectory)/MAD_days.zip/MAD_days.zip'
           roleARN: '$(AWS-Lambda-ARN)'
   dependsOn:
   - Build
