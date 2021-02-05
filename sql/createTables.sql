@@ -100,3 +100,13 @@ WHERE o.isActive = TRUE
 GROUP BY o.opportunityId
 ;
 
+CREATE OR REPLACE VIEW V_Comment
+AS SELECT   c.commentId id,
+            c.charityId charityId,
+            c.comment comment,
+            p.volunteerImageUrl imageUrl
+FROM Comment c 
+LEFT JOIN Picture p 
+ON c.commentId = p.commentId
+;
+
