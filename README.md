@@ -9,13 +9,11 @@ The hosted version of the application is available here: [https://madday.herokua
 This project uses the following technology:
 
 - Serverless Framework
-- JavaScript (ES2015+)
 - C#
 - SQL
 - Mysql library
 - AWS Lambda and API Gateway
 - AWS RDS
-- ESLint
 
 ---
 ---
@@ -26,18 +24,28 @@ The API exposes the following endpoints:
 ---
 
 ##### GET /opportunities
+[https://some-end-point-address.eu-west-2.amazonaws.com/opportunities](https://some-end-point-address.eu-west-2.amazonaws.com/opportunities)
 
 Responds with JSON containing all active volunteer opportunities in the Database.
 
 ---
 
 ##### GET /charities
+[https://some-end-point-address.eu-west-2.amazonaws.com/charities](https://some-end-point-address.eu-west-2.amazonaws.com/charities)
 
 Responds with JSON containing all charities in the Database.
 
 ---
 
+##### GET /charities/:charityId/comments
+[https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/comments](https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/comments)
+
+Responds with JSON containing all volunteer comments for a particular charity in the Database.
+
+---
+
 ##### POST /charities/:charityId/opportunities
+[https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities](https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities)
 
 Will create a new volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
 
@@ -58,6 +66,7 @@ Will create a new volunteer opportunity for an authorised charityId when sent a 
 ```
 
 ##### POST /opportunities/:opportunityId/volunteers
+[https://some-end-point-address.eu-west-2.amazonaws.com/opportunities/:opportunityId/volunteers](https://some-end-point-address.eu-west-2.amazonaws.com/opportunities/:opportunityId/volunteers)
 
 Will regsiter a new volunteer or lead volunteer for a specific opportunity when sent a JSON payload in the format:
    
@@ -74,7 +83,7 @@ Will regsiter a new volunteer or lead volunteer for a specific opportunity when 
 ---
 
 ##### PUT /charities/:charityId/opportunities/:opportunityId
-
+[https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId)
 
 Will update a volunteer opportunity for an authorised charityId when sent a JSON payload in the format:
 
@@ -97,7 +106,7 @@ Will update a volunteer opportunity for an authorised charityId when sent a JSON
 ---
 
 ##### DELETE /charities/:charityId/opportunities/:opportunityId
-
+[https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId](https://some-end-point-address.eu-west-2.amazonaws.com/charities/:charityId/opportunities/:opportunityId)
 
 Will set a specified volunteer opportunity for an authorised charityId as inactive.  
 
